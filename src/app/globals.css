@@ -1,0 +1,245 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/* Sistema de diseño Invictus × GEHsuites                              */
+/*                                                                     */
+/* Arquitectura de escalas (navy / caribe / gold / sand / ink) tomada  */
+/* del lenguaje visual de referencia; los valores son propios de       */
+/* Invictus. Fondo arena, acentos azul profundo y azul Caribe, dorado  */
+/* suave, titulares en serif y cifras en sans.                         */
+/* ------------------------------------------------------------------ */
+
+@theme {
+  /* --- Tipografía ------------------------------------------------ */
+  --font-display: var(--font-spectral), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+
+  /* --- Azul profundo (navy) -------------------------------------- */
+  --color-navy-950: #07182b;
+  --color-navy-900: #0c2340;
+  --color-navy-800: #123152;
+  --color-navy-700: #1a4570;
+  --color-navy-600: #24598c;
+
+  /* --- Azul Caribe ------------------------------------------------ */
+  --color-caribe-700: #1c5cab;
+  --color-caribe-600: #2268c0;
+  --color-caribe-500: #2a78d6;
+  --color-caribe-400: #5598e7;
+  --color-caribe-300: #86b6ef;
+  --color-caribe-200: #b7d3f6;
+  --color-caribe-100: #cde2fb;
+  --color-caribe-50: #eef5fe;
+
+  /* --- Dorado suave ----------------------------------------------- */
+  --color-gold-600: #a37c15;
+  --color-gold-500: #b8901f;
+  --color-gold-400: #c9a227;
+  --color-gold-300: #e0c675;
+  --color-gold-200: #efdda8;
+  --color-gold-100: #faf0d5;
+
+  /* --- Arena (superficies) ---------------------------------------- */
+  --color-sand-50: #fdfaf4;
+  --color-sand-100: #f6efe2;
+  --color-sand-200: #ebe0cc;
+  --color-sand-300: #dccdae;
+
+  /* --- Tinta ------------------------------------------------------- */
+  --color-ink-900: #0f1c28;
+  --color-ink-700: #2c3d4e;
+  --color-ink-600: #4a5a6b;
+  --color-ink-400: #8092a4;
+  --color-ink-300: #a9b6c3;
+
+  /* --- Líneas ------------------------------------------------------ */
+  --color-line: #e7e0d3;
+  --color-line-strong: #cfc4ae;
+
+  /* --- Verde (escenario optimista y estados positivos) ------------- */
+  --color-verde-700: #128057;
+  --color-verde-500: #1baf7a;
+  --color-verde-100: #d6f4e8;
+
+  /* --- Series de escenario (paleta validada CVD) ------------------- */
+  /* ΔE CVD ≥ 9,1 · ΔE visión normal ≥ 22,9 sobre superficie arena.   */
+  --color-serie-pesimista: #eda100;
+  --color-serie-conservador: #2a78d6;
+  --color-serie-optimista: #1baf7a;
+
+  /* --- Rampa ordinal para la distribución de costos ---------------- */
+  /* Un solo tono, claro→oscuro, ordenada por magnitud. Validada:     */
+  /* luminancia monótona, saltos ΔL ≥ 0,06, extremo claro 2,11:1.     */
+  --color-ramp-1: #86b6ef;
+  --color-ramp-2: #5598e7;
+  --color-ramp-3: #2a78d6;
+  --color-ramp-4: #1c5cab;
+  --color-ramp-5: #123f6d;
+
+  /* --- Cascada ----------------------------------------------------- */
+  --color-flujo-entrada: #1baf7a;
+  --color-flujo-salida: #c2603a;
+  --color-flujo-total: #1a4570;
+
+  /* --- Estado ------------------------------------------------------ */
+  --color-estado-bueno: #0ca30c;
+  --color-estado-aviso: #fab219;
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Compensa la barra de navegación fija al saltar a un ancla. */
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background-color: var(--color-sand-50);
+  color: var(--color-ink-900);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Titulares en serif; el resto —incluidas todas las cifras— en sans. */
+.titular {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+}
+
+/* Números alineados en columnas (tablas, ejes). Las cifras grandes
+   sueltas usan las figuras proporcionales por defecto. */
+.cifra-tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Entrada suave al hacer scroll (activada por IntersectionObserver). */
+.revelar {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.revelar[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .revelar {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Sliders                                                             */
+/* ------------------------------------------------------------------ */
+
+.slider-invictus {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-caribe-100);
+  outline: none;
+}
+
+.slider-invictus::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--color-caribe-500);
+  border: 3px solid #ffffff;
+  box-shadow: 0 1px 4px rgba(12, 35, 64, 0.3);
+  cursor: pointer;
+}
+
+.slider-invictus::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--color-caribe-500);
+  border: 3px solid #ffffff;
+  box-shadow: 0 1px 4px rgba(12, 35, 64, 0.3);
+  cursor: pointer;
+}
+
+.slider-invictus:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--color-navy-900);
+  outline-offset: 2px;
+}
+
+/* Foco visible y consistente en toda la página. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-caribe-700);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Impresión — respalda el botón "Descargar PDF"                       */
+/* ------------------------------------------------------------------ */
+
+@media print {
+  /* Fuera todo lo que no sea la simulación. */
+  .no-imprimir {
+    display: none !important;
+  }
+
+  html {
+    scroll-padding-top: 0;
+  }
+
+  body {
+    background: #ffffff;
+    font-size: 11px;
+  }
+
+  .revelar {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Las secciones no se parten a la mitad. */
+  section,
+  figure,
+  table {
+    break-inside: avoid;
+  }
+
+  /* Los acordeones salen abiertos en el papel. */
+  details {
+    display: block;
+  }
+
+  details > summary {
+    display: none;
+  }
+
+  a[href^="#"]::after {
+    content: "";
+  }
+}
