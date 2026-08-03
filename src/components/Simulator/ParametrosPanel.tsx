@@ -8,7 +8,6 @@ import {
   DIAS_CALENDARIO,
   DIAS_GOCE_PROPIETARIO,
   ESCENARIOS,
-  MAX_ANIO_PROYECCION,
   MAX_UNIDADES_SIMULADOR,
   ORDEN_ESCENARIOS,
   RANGO_ADR,
@@ -280,29 +279,6 @@ export function ParametrosPanel({
             </div>
           </CampoParametro>
         )}
-
-        {/* --- Año de proyección ------------------------------------ */}
-        <CampoParametro
-          label="Año de la proyección"
-          ayuda={
-            estado.anio === 1
-              ? "El Año 1 es la fuente de verdad del modelo financiero."
-              : "Proyección con crecimiento de tarifa e inflación del 5% anual."
-          }
-          className="md:col-span-2"
-        >
-          <GrupoOpciones<number>
-            etiquetaGrupo="Año de la proyección"
-            opciones={Array.from({ length: MAX_ANIO_PROYECCION }, (_, i) => ({
-              valor: i + 1,
-              label: `Año ${i + 1}`,
-            }))}
-            valor={estado.anio}
-            onChange={(a) => actualizar({ anio: a })}
-            columnas="grid-cols-5"
-            size="compacto"
-          />
-        </CampoParametro>
       </div>
 
       {/* --- Parámetros avanzados ----------------------------------- */}
